@@ -305,7 +305,7 @@ static void print_scroll(int table){
 
     mvprintw(4,0,"   PID             USER    PR    NI     VIRT       RES      SHR   S  %%CPU   TIME    COMMAND");
 
-    myqsort(solution,count_proc+1, sizeof(data_top),sorting,&sort_flag);
+    sort(solution,count_proc, sizeof(data_top),sorting,&sort_flag);
     for (int i = 0; i+table < count_proc && i<37; i++)
            print_proc(i,solution[i+table].pid, solution[i+table].user, solution[i+table].pr, solution[i+table].ni,
                     solution[i+table].virt, solution[i+table].res, solution[i+table].shr, solution[i+table].S, solution[i+table].cpu, solution[i+table].stime,

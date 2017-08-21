@@ -26,8 +26,7 @@ extern unsigned kb_swap_used;
 extern char headline[128];
 extern char *sprint_uptime();
 
-//from sort.c
-extern int sorting(const void * x,const void * x1);
+
 
 
 int
@@ -40,7 +39,7 @@ int
 
 
 
-typedef struct Parametrs {
+typedef struct Parameters {
 
 long int
 	pr,
@@ -62,4 +61,11 @@ char S;
 float cpu;
 
 
-} parametrs;
+} data_top;
+
+
+//from sort.c
+typedef int (*compar_d_fn_t)(const void *, const void *, void *);
+
+extern void sort (void *const pbase, size_t total_elems, size_t size, compar_d_fn_t cmp, void *arg);
+extern int sorting(const void * x,const void * x1, void * arg);
