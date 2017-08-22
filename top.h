@@ -8,7 +8,8 @@
 
 
 #define table_size 10000
-
+#define max_user_name 32
+#define max_command_name 128*1024
 
 
 //from memory.c
@@ -39,7 +40,7 @@ int
 
 
 
-typedef struct Parameters {
+typedef struct {
 
 long int
 	pr,
@@ -54,8 +55,8 @@ long int
 	mem,
    	shr;
 
-char user[150];
-char com[1500];
+char user[max_user_name];
+char com[max_command_name];
 char S;
 
 float cpu;
