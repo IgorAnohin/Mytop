@@ -67,5 +67,5 @@ float cpu;
 //from sort.c
 typedef int (*compar_d_fn_t)(const void *, const void *, void *);
 
-extern void sort (void *const pbase, size_t total_elems, size_t size, compar_d_fn_t cmp, void *arg);
+extern void quicksort (void *const pbase, size_t total_elems, size_t size, compar_d_fn_t cmp, void *arg);
 extern int sorting(const void * x,const void * x1, void * arg);
