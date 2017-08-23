@@ -14,6 +14,124 @@
 #include "sort.h"
 
 
+
+enum {
+    PID_Ascending, //0
+    PID_Descending,
+    User_Ascending,
+    User_Descending,
+    Pr_Ascending,
+    Pr_Descending,
+    Ni_Ascending,
+    Ni_Descending,
+    Virt_Ascending,
+    Virt_Descending,
+    Res_Ascending,
+    Res_Descending,
+    Shr_Ascending,
+    Shr_Descending,
+    S_Ascending,
+    S_Descending,
+    Cpu_Ascending,
+    Cpu_Descending,
+    Time_Ascending,
+    Time_Descending,
+    Command_Ascending,
+    Command_Descending  //21
+};
+
+
+
+int sorting(const void * x,const void * x1, void * arg)
+{
+    data_top * P = (data_top *)x;
+    data_top * P1 = (data_top *)x1;
+    int flag = *(int*)arg;
+
+    switch (flag) {
+        case PID_Ascending:
+            return (P->pid - P1->pid);
+            break;
+        case PID_Descending:
+            return (P1->pid - P->pid);
+            break;
+
+        case User_Ascending:
+            return (strcmp(P->user, P1->user) );
+            break;
+        case User_Descending:
+            return (strcmp(P1->user, P->user) );
+            break;
+
+        case Pr_Ascending:
+            return (P->pr - P1->pr);
+            break;
+        case Pr_Descending:
+            return (P1->pr - P->pr);
+            break;
+
+        case Ni_Ascending:
+            return (P->ni - P1->ni);
+            break;
+        case Ni_Descending:
+            return (P1->ni - P->ni);
+            break;
+
+        case Virt_Ascending:
+            return (P->virt - P1->virt);
+            break;
+        case Virt_Descending:
+            return (P1->virt - P->virt);
+            break;
+
+        case Res_Ascending:
+            return (P->res - P1->res);
+            break;
+        case Res_Descending:
+            return (P1->res - P->res);
+            break;
+
+        case Shr_Ascending:
+            return (P->shr - P1->shr);
+            break;
+        case Shr_Descending:
+            return (P1->shr - P->shr);
+            break;
+
+        case S_Ascending:
+            return (P->S - P1->S);
+            break;
+        case S_Descending:
+            return (P1->S - P->S);
+            break;
+
+        case Cpu_Ascending:
+            return (P->cpu - P1->cpu);
+            break;
+        case Cpu_Descending:
+            return (P1->cpu - P->cpu);
+            break;
+
+        case Time_Ascending:
+            return (P->stime - P1->stime);
+            break;
+        case Time_Descending:
+            return (P1->stime - P->stime);
+            break;
+
+        case Command_Ascending:
+            return (strcmp(P1->com, P->com) );
+            break;
+        case Command_Descending:
+            return (strcmp(P->com, P1->com) );
+            break;
+    }
+
+}
+
+
+
+
 enum {
     Command = 1,
     State = 3,
@@ -29,13 +147,28 @@ enum {
     Shr = 24
 };
 
+#define BAD_OPEN_DIR 						\
+"Error: /proc must be mounted\n"				\
+"  To mount /proc at boot you need an /etc/fstab line like:\n"	\
+"      /proc   /proc   proc    defaults\n"			\
+"  In the meantime, mount /proc /proc -t proc\n"
 
+
+#define table_size 10000
 #define max_path_name 32790
 #define stat_count 20
 #define comand_table_size 36
 
 
 data_top solution[table_size];
+
+
+int count_proc;
+int	quantity_sleep_proc;
+int	quantity_run_proc;
+int	quantity_stop_proc;
+int quantity_zomb_proc;
+
 
 static void count_different_proc( char temp)
 {
@@ -300,7 +433,7 @@ mvprintw(1,0,"Tasks: %6d total, %6d running, %6d sleeping, %6d stopped, %4d zomb
 
 //print_scroll
 
-static void print_scroll(int table){
+static void print_scroll(int table, int sort_flag){
 
     clear();
     mvprintw(0,0,"My top - %s",sprint_uptime());
@@ -386,6 +519,8 @@ static void print_scroll(int table){
 
 int main(int argc, char* argv[])
 {
+    int sort_flag;
+
     int c;
     int table = 0;
     enum
@@ -405,7 +540,7 @@ int main(int argc, char* argv[])
     meminfo();
     readproc();
 
-    print_scroll(table);
+    print_scroll(table, sort_flag);
        c=getch();
     switch(c){
        case KEY_UP:
