@@ -13,22 +13,26 @@
 #include "time.h"
 #include "sort.h"
 
-#define State 3
-#define Pid 6
-#define Userid 9
-#define Virt 18
-#define Res 22
-#define Shr 24
-#define Utime 11
-#define Stime 12
-#define Start_time 19
-#define Priority 15
-#define Ni 16
-#define Command 1
+
+enum {
+    Command = 1,
+    State = 3,
+    Pid = 6,
+    Userid = 9,
+    Utime = 11,
+    Stime = 12,
+    Priority = 15,
+    Ni = 16,
+    Virt = 18,
+    Start_time = 19,
+    Res = 22,
+    Shr = 24
+};
+
 
 #define max_path_name 32790
 #define stat_count 20
-#define comand_table_size 37
+#define comand_table_size 36
 
 
 data_top solution[table_size];
@@ -57,9 +61,9 @@ static long int parse_str(char * string)
 {
 
     char* temp;
-    temp = strstr(string,":");
+    temp = strstr(string, ":");
     temp[0] = temp[1];
-    return(strtol(temp,&temp,10));
+    return( strtol(temp, &temp, 10) );
 }
 
 
@@ -101,11 +105,11 @@ static void get_data_top_proc(char dir[])
         {
 
             case Command:
-                temp = strstr(buffer,":");
+                temp = strstr(buffer, ":");
                 int w = 0;
-                while (temp[w]>'z' || temp[w]<'a')          //find begin name
+                while (temp[w] > 'z' || temp[w] < 'a')          //find begin name
                     w++;
-                for (int q = 0; q+w<strlen(temp);q++)
+                for (int q = 0; (q + w) < strlen(temp); q++)
                     solution[count_proc].com[q] = temp[q+w];
                 break;
 
@@ -137,7 +141,7 @@ static void get_data_top_proc(char dir[])
 //get pr , ni , %cpu
 
 
-    snprintf(fstat, max_path_name ,"/proc/%s/stat", dir);
+    snprintf(fstat, max_path_name, "/proc/%s/stat", dir);
 	ptrfstat = fopen(fstat, "r");
     fgets(buffer, 1000, ptrfstat);
 
@@ -156,7 +160,6 @@ static void get_data_top_proc(char dir[])
         {
 			case Utime:
 				solution[count_proc].utime = parametr;
-
 				break;
 
             case Stime:
@@ -175,10 +178,9 @@ static void get_data_top_proc(char dir[])
 			case Ni:
 				solution[count_proc].ni = parametr;
 				break;
-
 		}
-
 	}
+
 	fclose(ptrfstat);
 
     //get total cpu
@@ -209,13 +211,13 @@ static void userid_to_user_name()
 		char* temp;
 		char useridstr[150];
 
-		snprintf(useridstr,100,"%ld",solution[i].userid);
+        snprintf(useridstr, 100, "%ld", solution[i].userid);
 		ptrfile = fopen("/etc/passwd", "r");
-		fgets(buffer,100,ptrfile);
+        fgets(buffer, 100, ptrfile);
 
 		temp = strstr(buffer, useridstr);
 		while (temp == NULL) {
-			fgets(buffer,100,ptrfile);
+            fgets(buffer, 100, ptrfile);
 			temp = strstr(buffer, useridstr);
 		}
 
@@ -278,6 +280,7 @@ static void print_proc(int i, long int ID, char *usern, long int PR, long int NI
 
     struct tm *runtime;
     runtime = gmtime( &time );
+
 	if (PR > -100)
     mvprintw(i+5,0,"%6ld %16s %5ld %5ld %8ld %9ld %8ld %3c  %4.1f %02d:%02d.%02d %s",
             ID, usern, PR, NI, VIRT, RES, SHR, s, CPU,runtime->tm_hour, runtime->tm_min, runtime->tm_sec, COMMAND);
@@ -309,14 +312,15 @@ static void print_scroll(int table){
 
     quicksort(solution, count_proc, sizeof(data_top),sorting,&sort_flag);
 
-    for (int i = 0; i + table < count_proc && i<comand_table_size; i++)
-           print_proc(i,solution[i+table].pid, solution[i+table].user, solution[i+table].pr, solution[i+table].ni,
-                    solution[i+table].virt, solution[i+table].res, solution[i+table].shr, solution[i+table].S,
-                    solution[i+table].cpu, solution[i+table].stime, solution[i+table].com);
+    for (int i = 0; i + table < count_proc && i <= comand_table_size; i++)
+           print_proc(i,  solution[i+table].pid,  solution[i+table].user,  solution[i+table].pr,  solution[i+table].ni,
+                    solution[i+table].virt,  solution[i+table].res,  solution[i+table].shr,  solution[i+table].S,
+                    solution[i+table].cpu,  solution[i+table].stime,  solution[i+table].com);
 
     start_color(); //set color
     init_pair(1,COLOR_GREEN, COLOR_BLUE);
     attron(COLOR_PAIR(1));
+
     switch(sort_flag) {
         case 0:
         case 1:
@@ -410,7 +414,7 @@ int main(int argc, char* argv[])
                  break;
        case KEY_DOWN:
        case 'd':
-       case 'D': if (table < count_proc-36) table++;
+       case 'D': if (table < count_proc-comand_table_size) table++;
                  break;
        case KEY_LEFT:
        case 'l': if (sort_flag > 0) sort_flag--;

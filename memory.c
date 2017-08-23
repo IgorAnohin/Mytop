@@ -22,15 +22,15 @@ static int meminfo_fd = -1;
 #define FILE_TO_BUF(filename, fd) do{				\
     static int local_n;						\
     if (fd == -1 && (fd = open(filename, O_RDONLY)) == -1) {	\
-	fprintf(stderr, BAD_OPEN_MESSAGE);			\
-	fflush(NULL);						\
-	_exit(102);						\
+    fprintf(stderr, BAD_OPEN_MESSAGE);			\
+    fflush(NULL);						\
+    _exit(102);						\
     }								\
     lseek(fd, 0L, SEEK_SET);					\
     if ((local_n = read(fd, buf, sizeof buf - 1)) < 0) {	\
-	perror(filename);					\
-	fflush(NULL);						\
-	_exit(103);						\
+    perror(filename);					\
+    fflush(NULL);						\
+    _exit(103);						\
     }								\
     buf[local_n] = '\0';					\
 }while(0)
@@ -158,7 +158,7 @@ void meminfo(void){
     );
     head = tail+1;
     if(!found) goto nextline;
-    *(found->slot) = strtoul(head,&tail,10);
+    *(found->slot) = strtoul(head, &tail, 10);
 nextline:
     tail = strchr(head, '\n');
     if(!tail) break;

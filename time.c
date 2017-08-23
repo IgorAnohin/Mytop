@@ -6,10 +6,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <fcntl.h>
+#include <sys/sysinfo.h>
 #include <string.h>
 #include <time.h>
-
 
 
 
@@ -17,45 +16,30 @@ char headline[128];
 static double av[3];
 
 char *sprint_uptime() {
+    struct sysinfo info;
 
 	FILE * ptrtime;
 	char buffer[100];
 	struct utmp *utmpstruct;
-	int upminutes, uphours, updays;
 	int pos;
 	struct tm *realtime;
 	time_t realseconds;
 	int numuser;
-	double uptime_secs, idle_secs;
+
+    int error = sysinfo(&info);
 
 /* first get the current time */
 
 	time(&realseconds);
 	realtime = localtime(&realseconds);
-	pos = sprintf(headline, " %02d:%02d:%02d ",
+    pos = sprintf(headline, " %02d:%02d:%02d up",
 	realtime->tm_hour, realtime->tm_min, realtime->tm_sec);
 
-/* read and calculate the amount of uptime */
 
-	ptrtime = fopen("/proc/uptime","r");
-	fgets(buffer,100,ptrtime);
-	sscanf(buffer,"%lf %lf",&uptime_secs,&idle_secs);
-	fclose(ptrtime);
+    struct tm *runtime;
+    runtime = gmtime( &info.uptime );
+    pos += sprintf(headline + pos, "  %02d:%02d, ",realtime->tm_hour, realtime->tm_min);
 
-
-	updays = (int) uptime_secs / (60*60*24);
-	strcat (headline, "up ");
-	pos += 3;
-	if (updays)
-		pos += sprintf(headline + pos, "%d day%s, ", updays, (updays != 1) ? "s" : "");
-	upminutes = (int) uptime_secs / 60;
-	uphours = upminutes / 60;
-	uphours = uphours % 24;
-	upminutes = upminutes % 60;
-	if(uphours)
-		pos += sprintf(headline + pos, "%2d:%02d, ", uphours, upminutes);
-	else
-		pos += sprintf(headline + pos, "%d min, ", upminutes);
 
 /* count the number of users */
 
@@ -80,7 +64,7 @@ char *sprint_uptime() {
 	pos += sprintf(headline + pos, " load average: %.2f, %.2f, %.2f",
 						 av[0], av[1], av[2]);
 
-	return headline;
+    return headline;
 }
 
 
