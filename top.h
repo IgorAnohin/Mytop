@@ -1,5 +1,5 @@
-
-
+#ifndef _top_h
+#define _top_h
 #define BAD_OPEN_DIR 						\
 "Error: /proc must be mounted\n"				\
 "  To mount /proc at boot you need an /etc/fstab line like:\n"	\
@@ -41,3 +41,4 @@ float cpu;
 
 } data_top;
 
+#endif
