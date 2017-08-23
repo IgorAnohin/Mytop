@@ -12,57 +12,74 @@
 
 
 
-char headline[128];
-static double av[3];
 
-char *sprint_uptime() {
+
+static int get_time(int pos, char * headline) {
+
     struct sysinfo info;
+    struct tm *realtime;
+    time_t realseconds;
 
-	FILE * ptrtime;
-	char buffer[100];
-	struct utmp *utmpstruct;
-	int pos;
-	struct tm *realtime;
-	time_t realseconds;
-	int numuser;
-
-    int error = sysinfo(&info);
-
-/* first get the current time */
-
-	time(&realseconds);
-	realtime = localtime(&realseconds);
+    sysinfo(&info);
+    time(&realseconds);
+    realtime = localtime(&realseconds);
     pos = sprintf(headline, " %02d:%02d:%02d up",
-	realtime->tm_hour, realtime->tm_min, realtime->tm_sec);
-
+    realtime->tm_hour, realtime->tm_min, realtime->tm_sec);
 
     struct tm *runtime;
     runtime = gmtime( &info.uptime );
     pos += sprintf(headline + pos, "  %02d:%02d, ",realtime->tm_hour, realtime->tm_min);
 
+    return(pos);
+}
 
-/* count the number of users */
+static void get_user(int pos, char* headline){
 
-	numuser = 0;
-	setutent();
-	while ((utmpstruct = getutent())) {
-		if ((utmpstruct->ut_type == USER_PROCESS) &&
-		   (utmpstruct->ut_name[0] != '\0'))
-			numuser++;
-		}
-	endutent();
+    FILE * ptrtime;
+    char buffer[100];
+    struct utmp *utmpstruct;
 
-	pos += sprintf(headline + pos, "%2d user%s, ", numuser, numuser == 1 ? "" : "s");
+    int numuser = 0;
+    setutent();
+    while ((utmpstruct = getutent())) {
+        if ((utmpstruct->ut_type == USER_PROCESS) &&
+           (utmpstruct->ut_name[0] != '\0'))
+            numuser++;
+        }
+    endutent();
+
+    pos += sprintf(headline + pos, "%2d user%s, ", numuser, numuser == 1 ? "" : "s");
+
+    double av[3];
+
+    ptrtime = fopen("/proc/loadavg","r");
+    fgets(buffer,100,ptrtime);
+    sscanf(buffer,"%lf %lf %lf",&av[0], &av[1], &av[2]);
+    fclose(ptrtime);
+
+    pos += sprintf(headline + pos, " load average: %.2f, %.2f, %.2f",
+                         av[0], av[1], av[2]);
+
+}
 
 
-	ptrtime = fopen("/proc/loadavg","r");
-	fgets(buffer,100,ptrtime);
-	sscanf(buffer,"%lf %lf %lf",&av[0], &av[1], &av[2]);
-	fclose(ptrtime);
+char *sprint_uptime() {
+
+    int pos = 0;
+    char * headline = malloc(sizeof(char)*128);
+    char * headline1 = malloc(sizeof(char)*128);
 
 
-	pos += sprintf(headline + pos, " load average: %.2f, %.2f, %.2f",
-						 av[0], av[1], av[2]);
+
+    pos = get_time(pos, headline);
+    get_user(pos,headline1);
+
+    strcat(headline,headline1);
+
+    free(headline1);
+
+
+
 
     return headline;
 }

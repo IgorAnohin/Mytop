@@ -30,6 +30,13 @@ enum {
 };
 
 
+int count_proc;
+int	quantity_sleep_proc;
+int	quantity_run_proc;
+int	quantity_stop_proc;
+int quantity_zomb_proc;
+
+#define table_size 10000
 #define max_path_name 32790
 #define stat_count 20
 #define comand_table_size 36
@@ -416,7 +423,8 @@ mvprintw(1,0,"Tasks: %6d total, %6d running, %6d sleeping, %6d stopped, %4d zomb
 
 //print_scroll
 
-static void print_scroll(int table){
+static void print_scroll(int table,int sort_flag)
+{
 
     clear();
     mvprintw(0,0,"My top - %s",sprint_uptime());
@@ -502,6 +510,8 @@ static void print_scroll(int table){
 
 int main(int argc, char* argv[])
 {
+    int sort_flag = 0;
+
     int c;
     int table = 0;
     enum
@@ -521,7 +531,7 @@ int main(int argc, char* argv[])
     meminfo();
     readproc();
 
-    print_scroll(table);
+    print_scroll(table, sort_flag);
        c=getch();
     switch(c){
        case KEY_UP:

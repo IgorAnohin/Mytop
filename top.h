@@ -7,16 +7,9 @@
 "  In the meantime, mount /proc /proc -t proc\n"
 
 
-#define table_size 10000
 #define max_user_name 32
 #define max_command_name 128*1024
 
-int sort_flag;
-int count_proc;
-int	quantity_sleep_proc;
-int	quantity_run_proc;
-int	quantity_stop_proc;
-int quantity_zomb_proc;
 
 typedef struct {
 
