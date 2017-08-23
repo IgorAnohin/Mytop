@@ -66,22 +66,18 @@ static void get_user(int pos, char* headline){
 char *sprint_uptime() {
 
     int pos = 0;
-    char * headline = malloc(sizeof(char)*128);
     char * headline1 = malloc(sizeof(char)*128);
 
 
 
-    pos = get_time(pos, headline);
+    pos = get_time(pos, headline1);
     get_user(pos,headline1);
 
-    strcat(headline,headline1);
-
-    free(headline1);
 
 
 
 
-    return headline;
+    return headline1;
 }
 
 
