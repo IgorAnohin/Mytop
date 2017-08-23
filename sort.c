@@ -12,35 +12,30 @@
 #include "top.h"
 
 enum {
-    PID,
-    USER,
-    PR,
-    ...
-
+    PID_Ascending, //0
+    PID_Descending,
+    User_Ascending,
+    User_Descending,
+    Pr_Ascending,
+    Pr_Descending,
+    Ni_Ascending,
+    Ni_Descending,
+    Virt_Ascending,
+    Virt_Descending,
+    Res_Ascending,
+    Res_Descending,
+    Shr_Ascending,
+    Shr_Descending,
+    S_Ascending,
+    S_Descending,
+    Cpu_Ascending,
+    Cpu_Descending,
+    Time_Ascending,
+    Time_Descending,
+    Command_Ascending,
+    Command_Descending  //21
 };
 
-#define PID 0
-#define Pid 1
-#define USER 2
-#define User 3
-#define PR 4
-#define Pr 5
-#define NI 6
-#define Ni 7
-#define VIRT 8
-#define Virt 9
-#define RES 10
-#define Res 11
-#define SHR 12
-#define Shr 13
-#define SS 14
-#define Ss 15
-#define CPU 16
-#define Cpu 17
-#define TIME 18
-#define Time 19
-#define COMMAND 20
-#define Command 21
 
 
  
@@ -80,80 +75,80 @@ int sorting(const void * x,const void * x1, void * arg) {
     int flag = *(int*)arg;
 
     switch( flag) {
-        case PID:
+        case PID_Ascending:
             return (P->pid - P1->pid);
             break;
-        case Pid:
+        case PID_Descending:
             return (P1->pid - P->pid);
             break;
 
-        case USER:
+        case User_Ascending:
             return (strcmp(P->user, P1->user) );
             break;
-        case User:
+        case User_Descending:
             return (strcmp(P1->user, P->user) );
             break;
 
-        case PR:
+        case Pr_Ascending:
             return (P->pr - P1->pr);
             break;
-        case Pr:
+        case Pr_Descending:
             return (P1->pr - P->pr);
             break;
 
-        case NI:
+        case Ni_Ascending:
             return (P->ni - P1->ni);
             break;
-        case Ni:
+        case Ni_Descending:
             return (P1->ni - P->ni);
             break;
 
-        case VIRT:
+        case Virt_Ascending:
             return (P->virt - P1->virt);
             break;
-        case Virt:
+        case Virt_Descending:
             return (P1->virt - P->virt);
             break;
 
-        case RES:
+        case Res_Ascending:
             return (P->res - P1->res);
             break;
-        case Res:
+        case Res_Descending:
             return (P1->res - P->res);
             break;
 
-        case SHR:
+        case Shr_Ascending:
             return (P->shr - P1->shr);
             break;
-        case Shr:
+        case Shr_Descending:
             return (P1->shr - P->shr);
             break;
 
-        case SS:
+        case S_Ascending:
             return (P->S - P1->S);
             break;
-        case Ss:
+        case S_Descending:
             return (P1->S - P->S);
             break;
 
-        case CPU:
+        case Cpu_Ascending:
             return (P->cpu - P1->cpu);
             break;
-        case Cpu:
+        case Cpu_Descending:
             return (P1->cpu - P->cpu);
             break;
 
-        case TIME:
+        case Time_Ascending:
             return (P->stime - P1->stime);
             break;
-        case Time:
+        case Time_Descending:
             return (P1->stime - P->stime);
             break;
 
-        case COMMAND:
+        case Command_Ascending:
             return (strcmp(P1->com, P->com) );
             break;
-        case Command:
+        case Command_Descending:
             return (strcmp(P->com, P1->com) );
             break;
 
@@ -193,9 +188,9 @@ void quicksort (void *const pbase, size_t total_elems, size_t size,
           //small element
           char *mid = lo + size * ((hi - lo) / size >> 1);
  
-          if ((*cmp) ((void *) mid, (void *) lo, arg) < 0)
+          if ( (*cmp) ((void *) mid, (void *) lo, arg) < 0)
             SWAP (mid, lo, size);
-          if ((*cmp) ((void *) hi, (void *) mid, arg) < 0)
+          if ( (*cmp) ((void *) hi, (void *) mid, arg) < 0)
             SWAP (mid, hi, size);
           
  
