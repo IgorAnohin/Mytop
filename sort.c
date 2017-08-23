@@ -11,6 +11,14 @@
 
 #include "top.h"
 
+enum {
+    PID,
+    USER,
+    PR,
+    ...
+
+};
+
 #define PID 0
 #define Pid 1
 #define USER 2

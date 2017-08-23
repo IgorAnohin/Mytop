@@ -17,6 +17,7 @@ char headline[128];
 static double av[3];
 
 char *sprint_uptime() {
+
 	FILE * ptrtime;
 	char buffer[100];
 	struct utmp *utmpstruct;
