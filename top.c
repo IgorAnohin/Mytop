@@ -156,14 +156,16 @@ static void get_data_top_proc(char dir[])
         {
 			case Utime:
 				solution[count_proc].utime = parametr;
+
 				break;
 
-			case Stime:
-				solution[count_proc].stime = parametr;
-				break;
+            case Stime:
+                solution[count_proc].stime = parametr;
+                break;
 
             case Start_time:
                 solution[count_proc].start_time = parametr;
+
                 break;
 
 			case Priority:
@@ -272,11 +274,10 @@ mvprintw(3,0,"KiB Swap: %10d total, %10d free, %10d used\n" ,
 
 
 static void print_proc(int i, long int ID, char *usern, long int PR, long int NI, long int VIRT, long int RES,
-           long int SHR, char s, float CPU, struct tm *runtime, char * COMMAND) {
+           long int SHR, char s, float CPU, time_t time, char * COMMAND) {
 
     struct tm *runtime;
-    runtime = gmtime(&TIME);
-
+    runtime = gmtime( &time );
 	if (PR > -100)
     mvprintw(i+5,0,"%6ld %16s %5ld %5ld %8ld %9ld %8ld %3c  %4.1f %02d:%02d.%02d %s",
             ID, usern, PR, NI, VIRT, RES, SHR, s, CPU,runtime->tm_hour, runtime->tm_min, runtime->tm_sec, COMMAND);
@@ -390,7 +391,7 @@ int main(int argc, char* argv[])
 
     initscr();
     noecho();
-    halfdelay(10);
+    halfdelay(30);
     bool loop = 1;
     keypad(stdscr,TRUE);
 

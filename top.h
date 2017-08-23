@@ -11,18 +11,12 @@
 #define max_user_name 32
 #define max_command_name 128*1024
 
-
-
-
-
 int sort_flag;
 int count_proc;
 int	quantity_sleep_proc;
 int	quantity_run_proc;
 int	quantity_stop_proc;
 int quantity_zomb_proc;
-
-
 
 typedef struct {
 
@@ -47,9 +41,3 @@ float cpu;
 
 } data_top;
 
-
-//from sort.c
-typedef int (*compar_d_fn_t)(const void *, const void *, void *);
-
-extern void quicksort (void *const pbase, size_t total_elems, size_t size, compar_d_fn_t cmp, void *arg);
-extern int sorting(const void * x,const void * x1, void * arg);
