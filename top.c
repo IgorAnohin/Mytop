@@ -41,7 +41,7 @@ int	quantity_run_proc;
 int	quantity_stop_proc;
 int quantity_zomb_proc;
 
-#define table_size 10000
+#define table_size 1000
 #define max_path_name 32790
 #define stat_count 20
 #define comand_table_size 36
@@ -228,7 +228,8 @@ static void get_data_top_proc(char dir[])
 	char* eoff="start";
 	while (eoff != NULL)
 	{
-		eoff = fgets(buffer,100,ptrfstatus);
+        eoff = fgets(buffer,100,ptrfstatus);
+        if ( buffer[0]=='P' && buffer[1] == 'i' ) number_string = 6;
         switch ( number_string)
         {
 
