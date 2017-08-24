@@ -1,3 +1,7 @@
 *.o
 mytop
 mytop.*
+top.config
+top.includes
+top.creator*
+top.files
