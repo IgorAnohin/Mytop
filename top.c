@@ -320,6 +320,7 @@ static void get_data_top_proc(char dir[])
     totalcpu = strtol(temp, &temp, 10);
 
     solution[count_proc].cpu = (solution[count_proc].stime + solution[count_proc].utime) * 100 / totalcpu;
+    if (solution[count_proc].cpu > 100) solution[count_proc].cpu = 0;
 
     count_proc++;
 }
