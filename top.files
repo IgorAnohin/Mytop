@@ -2,5 +2,8 @@ ncurs_test.c
 top.c
 top.h
 memory.c
+memory.h
 time.c
+time.h
 sort.c
+sort.h

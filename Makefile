@@ -1,6 +1,7 @@
+
 all:
-	gcc -g -c *.c
-	gcc -o mytop *.o -lncurses
+	$(CC) -std=c99 -g -c *.c
+	$(CC) -o mytop *.o -lncurses
 
 clean:
 	rm -rf *.o
