@@ -19,19 +19,13 @@
 "      /proc   /proc   proc    defaults\n"			\
 "  In the meantime, mount /proc /proc -t proc\n"
 
+
 enum {
-    Command = 1,
-    State = 3,
-    Pid = 6,
-    Userid = 9,
     Utime = 11,
     Stime = 12,
     Priority = 15,
     Ni = 16,
-    Virt = 18,
     Start_time = 19,
-    Res = 22,
-    Shr = 24
 };
 
 
@@ -224,45 +218,35 @@ static void get_data_top_proc(char dir[])
     snprintf(fstatus, max_path_name ,"/proc/%s/status", dir);
 	ptrfstatus = fopen(fstatus, "r");
 
-	number_string = 1;
 	char* eoff="start";
 	while (eoff != NULL)
 	{
         eoff = fgets(buffer,100,ptrfstatus);
-        if ( buffer[0]=='P' && buffer[1] == 'i' ) number_string = 6;
-        switch ( number_string)
-        {
 
-            case Command:
+            if ( strstr(buffer,"Name:") != NULL)
+            {
                 temp = strstr(buffer, ":");
                 int w = 0;
                 while (temp[w] > 'z' || temp[w] < 'a')          //find begin name
                     w++;
                 for (int q = 0; (q + w) < strlen(temp); q++)
                     solution[count_proc].com[q] = temp[q+w];
-                break;
+            }
 
-			case Pid:
+            if (strstr(buffer,"Pid:") == buffer)
                 solution[count_proc].pid = parse_str(buffer);
-				break;
 
-			case Userid:
+            if ( strstr(buffer,"Uid:") != NULL)
                 solution[count_proc].userid = parse_str(buffer);
-				break;
 
-			case Virt:
+            if (strstr(buffer,"Vmsize:") != NULL)
                 solution[count_proc].virt = parse_str(buffer);
-				break;
 
-			case Res:
+            if (strstr(buffer,"VmRSS:") != NULL)
                 solution[count_proc].res = parse_str(buffer);
-				break;
 
-			case Shr:
+            if (strstr(buffer,"RssFile:") != NULL)
                 solution[count_proc].shr = parse_str(buffer);
-				break;
-		}
-		number_string++;
 
 	}
 	fclose(ptrfstatus);
