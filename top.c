@@ -411,9 +411,9 @@ static void print_proc(int i, long int ID, char *usern, long int PR, long int NI
     runtime = gmtime( &time );
 
 	if (PR > -100)
-    mvprintw(i+5,0,"%6ld %16s %5ld %5ld %8ld %9ld %8ld %3c  %4.1f %02d:%02d.%02d %s",
+    mvprintw(i+5,0,"%6ld %18s %5ld %5ld %8ld %9ld %8ld %3c  %4.1f %02d:%02d.%02d %s",
             ID, usern, PR, NI, VIRT, RES, SHR, s, CPU,runtime->tm_hour, runtime->tm_min, runtime->tm_sec, COMMAND);
-        else mvprintw(i+5,0,"%6ld %16s    rt %5ld %8ld %9ld %8ld %3c  %4.1f %02d:%02d.%02d %s",
+        else mvprintw(i+5,0,"%6ld %18s    rt %5ld %8ld %9ld %8ld %3c  %4.1f %02d:%02d.%02d %s",
             ID, usern, NI, VIRT, RES, SHR, s, CPU,runtime->tm_hour, runtime->tm_min, runtime->tm_sec, COMMAND);
 
 
