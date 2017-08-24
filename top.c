@@ -73,7 +73,7 @@ enum {
 };
 
 
-int sorting(const void * x,const void * x1, void * arg) {
+static int sorting(const void * x,const void * x1, void * arg) {
     data_top * P = (data_top *)x;
     data_top * P1 = (data_top *)x1;
     int flag = *(int*)arg;
@@ -437,7 +437,7 @@ static void print_scroll(int table,int sort_flag)
     print_tasks();
     print_mem();
 
-    mvprintw(4,0,"   PID             USER    PR    NI     VIRT       RES      SHR   S  %%CPU   TIME    COMMAND");
+    mvprintw(4,0,"   PID               USER    PR    NI     VIRT       RES      SHR   S  %%CPU   TIME    COMMAND");
 
 
     quicksort(solution, count_proc, sizeof(data_top),sorting,&sort_flag);
@@ -459,46 +459,46 @@ static void print_scroll(int table,int sort_flag)
 
         case 2:
         case 3:
-            mvprintw(4,19,"USER");
+            mvprintw(4,21,"USER");
             break;
 
         case 4:
         case 5:
-            mvprintw(4,27,"PR");
+            mvprintw(4,29,"PR");
              break;
         case 6:
         case 7:
-            mvprintw(4,33,"NI");
+            mvprintw(4,35,"NI");
             break;
         case 8:
         case 9:
-            mvprintw(4,40,"VIRT");
+            mvprintw(4,42,"VIRT");
             break;
         case 10:
         case 11:
-            mvprintw(4,51,"RES");
+            mvprintw(4,53,"RES");
             break;
 
         case 12:
         case 13:
-            mvprintw(4,60,"SHR");
+            mvprintw(4,62,"SHR");
             break;
 
         case 14:
         case 15:
-            mvprintw(4,66,"S");
+            mvprintw(4,68,"S");
              break;
         case 16:
         case 17:
-            mvprintw(4,69,"%%CPU");
+            mvprintw(4,71,"%%CPU");
             break;
         case 18:
         case 19:
-            mvprintw(4,76,"TIME");
+            mvprintw(4,78,"TIME");
             break;
         case 20:
         case 21:
-            mvprintw(4,84,"COMMAND");
+            mvprintw(4,86,"COMMAND");
             break;
 
 
