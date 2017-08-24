@@ -1,7 +1,3 @@
 *.o
 mytop
-mytop.config 
-mytop.creator 
-mytop.creator.user 
-mytop.files 
-mytop.includes
+mytop.*
