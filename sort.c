@@ -4,9 +4,11 @@
 #include <fcntl.h>
 #include <alloca.h>
 #include <limits.h>
-#define __USE_GNU
-#include <stdlib.h>
 #include <string.h>
+
+#include "sort.h"
+
+
 
 
  
