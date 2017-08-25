@@ -68,14 +68,8 @@ char *sprint_uptime() {
     int pos = 0;
     char * headline1 = malloc(sizeof(char)*128);
 
-
-
     pos = get_time(pos, headline1);
     get_user(pos,headline1);
-
-
-
-
 
     return headline1;
 }
