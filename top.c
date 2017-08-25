@@ -1,7 +1,7 @@
 #include <dirent.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include <sys/sysinfo.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <string.h>
@@ -36,7 +36,6 @@ int	quantity_stop_proc;
 int quantity_zomb_proc;
 
 #define table_size 1000
-#define max_path_name 32790
 #define stat_count 20
 #define comand_table_size 36
 
@@ -156,7 +155,6 @@ static int sorting(const void * x,const void * x1, void * arg) {
 
 }
 
-
 data_top solution[table_size];
 
 static void count_different_proc( char temp)
@@ -197,7 +195,7 @@ static void get_data_top_proc(char dir[])
 
 	long int parametr, number_string;
 	char buffer[1500];
-    char fstatus[max_path_name],fstat[max_path_name];
+    char fstatus[PATH_MAX],fstat[PATH_MAX];
 	char * temp;
 	FILE * ptrfstatus;
 	FILE * ptrfstat;
@@ -215,7 +213,7 @@ static void get_data_top_proc(char dir[])
         }
 
 
-    snprintf(fstatus, max_path_name ,"/proc/%s/status", dir);
+    snprintf(fstatus, PATH_MAX ,"/proc/%s/status", dir);
 	ptrfstatus = fopen(fstatus, "r");
 
 	char* eoff="start";
@@ -254,7 +252,7 @@ static void get_data_top_proc(char dir[])
 //get pr , ni , %cpu
 
 
-    snprintf(fstat, max_path_name, "/proc/%s/stat", dir);
+    snprintf(fstat, PATH_MAX, "/proc/%s/stat", dir);
 	ptrfstat = fopen(fstat, "r");
     fgets(buffer, 1000, ptrfstat);
 
@@ -502,6 +500,7 @@ static void print_scroll(int table,int sort_flag)
 int main(int argc, char* argv[])
 {
     int sort_flag = 0;
+
 
     int c;
     int table = 0;
